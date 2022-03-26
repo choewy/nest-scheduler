@@ -44,9 +44,23 @@ $ npm install
 
 ## Run(root)
 
+- server-port : 5000
+- client-port : 3000
+
+### server & client
+
 ```
 $ npm run start:dev
 ```
 
-- server-port : 5000
-- client-port : 3000
+### server (only)
+
+```
+$ npm run server
+```
+
+### client (only)
+
+```
+$ npm run client
+```
