@@ -9,24 +9,18 @@ module.exports = (app) => {
     const io = socketIo(server);
 
     io.on("connection", socket => {
-        socket.on("Input Chat Message", msg => {
-            connect.then(db => {
-                try {
-                    let chat = new Chat({ message: msg.chatMessage, sender: msg.userID, type: msg.type })
-
-                    chat.save((err, doc) => {
-                        if (err) return res.json({ success: false, err })
-
-                        Chat.find({ "_id": doc._id })
-                            .populate("sender")
-                            .exec((err, doc) => { return io.emit("Output Chat Message", doc); })
-                    })
-                } catch (error) {
-                    console.error(error);
-                }
-            })
-        })
-    })
+        socket.on("send_chat", (data) => {
+            const { message, sender, type } = data;
+            const chat = new Chat({ message, sender, type });
+            try {
+                const { _id } = await chat.save();
+                const doc = await Chat.find({ _id }).populate('sender');
+                return io.emit('emit_chat', doc);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    });
 
     return server;
 };
