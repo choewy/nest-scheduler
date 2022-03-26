@@ -6,60 +6,55 @@ class UserController {
     static auth = (req, res) => {
         res.status(200).json({
             _id: req.user._id,
-            isAdmin: req.user.role === 0 ? false : true,
-            isAuth: true,
+            auth: true,
             email: req.user.email,
             name: req.user.name,
-            lastname: req.user.lastname,
             role: req.user.role,
             image: req.user.image,
         });
     };
 
-    static signUp = (req, res) => {
+    static signUp = async (req, res) => {
         const user = new User(req.body);
-        user.save((err, doc) => {
-            if (err) return res.json({ success: false, err });
-            sendEmail(doc.email, doc.name, null, "welcome");
-            return res.status(200).json({
-                success: true
-            });
-        });
+        try {
+            await user.save();
+            // await sendEmail(user.email, user.name, null, 'welcome');
+            return res.json({ ok: true });
+        } catch (error) {
+            return res.json({ ok: false, error });
+        }
     };
 
-    static signIn = (req, res) => {
-        User.findOne({ email: req.body.email }, (err, user) => {
-            if (!user)
-                return res.json({
-                    loginSuccess: false,
-                    message: "Auth failed, email not found"
-                });
-
-            user.comparePassword(req.body.password, (err, isMatch) => {
-                if (!isMatch)
-                    return res.json({ loginSuccess: false, message: "Wrong password" });
-
-                user.generateToken((err, user) => {
-                    if (err) return res.status(400).send(err);
-                    res.cookie("w_authExp", user.tokenExp);
-                    res
-                        .cookie("w_auth", user.token)
-                        .status(200)
-                        .json({
-                            loginSuccess: true
-                        });
-                });
-            });
+    static signIn = async (req, res) => {
+        const { email, password } = req.body;
+        let user = await User.findOne({ email });
+        if (!user) return res.json({
+            ok: false, message: '이메일을 찾을 수 없습니다.'
         });
+
+        const valid = await user.comparePassword(password);
+        if (!valid) return res.json({
+            ok: false, message: '비밀번호가 일치하지 않습니다.'
+        });
+
+        try {
+            user = await user.generateToken();
+            res.cookie('chat_app_auth_token_exp', user.tokenExp);
+            res.cookie('chat_app_auth_token', user.token);
+            return res.status(200).json({ ok: true });
+        } catch (error) {
+            return res.json({ ok: false, error });
+        };
     };
 
-    static signOut = (req, res) => {
-        User.findOneAndUpdate({ _id: req.user._id }, { token: "", tokenExp: "" }, (err, doc) => {
-            if (err) return res.json({ success: false, err });
-            return res.status(200).send({
-                success: true
-            });
-        });
+    static signOut = async (req, res) => {
+        try {
+            const { _id } = req.user;
+            await User.findOneAndUpdate({ _id }, { token: "", tokenExp: "" });
+            return res.status(200).json({ ok: true });
+        } catch (error) {
+            return res.json({ ok: false, error });
+        };
     };
 };
 
