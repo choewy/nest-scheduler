@@ -27,7 +27,7 @@ COOKIE_EXP_KEY=chat_app_auth_token_exp
 $ docker-compose up -d
 ```
 
-## NPM 
+## NPM-Dependencies
 
 ### server(root)
 
@@ -36,7 +36,17 @@ $ npm install
 ```
 
 ### client
+
 ```
 $ cd client
 $ npm install 
 ```
+
+## Run(root)
+
+```
+$ npm run start:dev
+```
+
+server-port : 5000
+client-port : 3000
