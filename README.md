@@ -2,9 +2,9 @@
 
 > 항해99 알고리즘 주차 동안 기분 전환겸 팀원들과 함께한 토이 프로젝트(with. 소소한 일탈)
 
-## Environment
+## Environment(.env)
 
-### server
+### server(root)
 
 ```env
 PORT=5000
