@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const saltRounds = process.env.SALT_ROUNDS;
+const jwtSecret = process.env.JWT_SECRET;
 
 const UserSchema = Schema({
     name: {
@@ -33,52 +34,40 @@ const UserSchema = Schema({
     }
 });
 
-UserSchema.pre('save', function (next) {
-    var user = this;
+UserSchema.pre('save', async function (next) {
+    const user = this;
+    const { password } = user;
 
     if (user.isModified('password')) {
+        const salt = bcrypt.genSalt(saltRounds);
+        user.password = bcrypt.hash(password, salt);
+    };
 
-        bcrypt.genSalt(saltRounds, function (err, salt) {
-            if (err) return next(err);
-
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) return next(err);
-                user.password = hash
-                next()
-            })
-        })
-    } else {
-        next()
-    }
+    next();
 });
 
-UserSchema.methods.comparePassword = function (plainPassword, cb) {
-    bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch)
-    })
+UserSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password)
 };
 
-UserSchema.methods.generateToken = function (cb) {
-    var user = this;
-    var token = jwt.sign(user._id.toHexString(), 'secret')
+UserSchema.methods.generateToken = async function () {
+    const user = this;
+    const { _id } = user;
+    user.token = jwt.sign(_id.toHexString(), jwtSecret);
 
-    user.token = token;
-    user.save(function (err, user) {
-        if (err) return cb(err)
-        cb(null, user);
-    })
-}
+    try {
+        await user.save();
+        return user;
+    } catch (error) {
+        console.log(error);
+        throw Error("Failed Save");
+    };
+};
 
-UserSchema.statics.findByToken = function (token, cb) {
-    var user = this;
-
-    jwt.verify(token, 'secret', function (err, decode) {
-        user.findOne({ "_id": decode, "token": token }, function (err, user) {
-            if (err) return cb(err);
-            cb(null, user);
-        })
-    })
-}
+UserSchema.statics.findByToken = async function (token, cb) {
+    const user = this;
+    const _id = jwt.verify(token, jwtSecret);
+    return await user.findOne({ _id }, token);
+};
 
 module.exports = { UserSchema };
