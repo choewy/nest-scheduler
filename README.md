@@ -20,3 +20,23 @@ JWT_SECRET=JsonWebTokenSecret
 COOKIE_TOKEN_KEY=chat_app_auth_token
 COOKIE_EXP_KEY=chat_app_auth_token_exp
 ```
+
+## Docker-MongoDB
+
+```
+$ docker-compose up -d
+```
+
+## NPM 
+
+### server(root)
+
+```
+$ npm install
+```
+
+### client
+```
+$ cd client
+$ npm install 
+```
