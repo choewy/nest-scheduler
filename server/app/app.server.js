@@ -9,7 +9,7 @@ module.exports = (app) => {
     const io = socketIo(server);
 
     io.on("connection", socket => {
-        socket.on("send_chat", (data) => {
+        socket.on("send_chat", async (data) => {
             const { message, sender, type } = data;
             const chat = new Chat({ message, sender, type });
             try {
