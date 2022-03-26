@@ -48,5 +48,5 @@ $ npm install
 $ npm run start:dev
 ```
 
-server-port : 5000
-client-port : 3000
+- server-port : 5000
+- client-port : 3000
