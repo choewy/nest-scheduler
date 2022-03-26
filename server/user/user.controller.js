@@ -2,6 +2,9 @@
 
 const { User } = require('./user.model');
 
+const cookieTokenKey = process.env.COOKIE_TOKEN_KEY || 'app_token';
+const cookieExpKey = process.env.COOKIE_EXP_KEY || 'app_token_exp';
+
 class UserController {
     static auth = (req, res) => {
         res.status(200).json({
@@ -39,8 +42,8 @@ class UserController {
 
         try {
             user = await user.generateToken();
-            res.cookie('chat_app_auth_token_exp', user.tokenExp);
-            res.cookie('chat_app_auth_token', user.token);
+            res.cookie(cookieExpKey, user.tokenExp);
+            res.cookie(cookieTokenKey, user.token);
             return res.status(200).json({ ok: true });
         } catch (error) {
             return res.json({ ok: false, error });
