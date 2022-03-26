@@ -1,3 +1,5 @@
+'use strict';
+
 const { Schema } = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');

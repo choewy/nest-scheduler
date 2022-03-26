@@ -1,5 +1,6 @@
-const User = require("./user.model");
+'use strict';
 
+const User = require("./user.model");
 
 let auth = (req, res, next) => {
     let token = req.cookies.w_auth;
