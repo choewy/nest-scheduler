@@ -7,7 +7,7 @@ const cookieExpKey = process.env.COOKIE_EXP_KEY || 'app_token_exp';
 
 class UserController {
     static auth = (req, res) => {
-        res.status(200).json({
+        return res.status(200).json({
             _id: req.user._id,
             auth: true,
             email: req.user.email,

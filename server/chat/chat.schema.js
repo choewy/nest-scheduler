@@ -10,9 +10,6 @@ const ChatSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    type: {
-        type: String
-    },
 }, { timestamps: true });
 
 module.exports = ChatSchema;

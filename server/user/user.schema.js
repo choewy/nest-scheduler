@@ -66,7 +66,7 @@ UserSchema.statics.findByToken = async function (token) {
     const user = this;
     try {
         const _id = jwt.verify(token, jwtSecret);
-        return await user.findOne({ _id }, token);
+        return await user.findOne({ _id, token });
     } catch (error) {
         throw Error("Failed Auth");
     }
