@@ -1,4 +1,20 @@
 import { useState } from 'react';
+import { signInUser } from '../../actions/action.auth';
+import { SignInErrors } from '../../configs/error.config';
+import { EmailSubmitExp, PasswordSubmitExp } from '../../configs/expr.config';
+
+const InputProps = {
+    email: {
+        type: 'email',
+        name: 'email',
+        placeholder: "이메일 주소"
+    },
+    password: {
+        type: 'password',
+        name: 'password',
+        placeholder: '비밀번호'
+    }
+};
 
 const SignInPage = () => {
     const [state, setState] = useState({
@@ -7,15 +23,22 @@ const SignInPage = () => {
     });
 
     const stateChangedHandler = (e) => {
-        const { taget: { name, value } } = e;
-        // watcher & pipe
-
+        const { target: { name, value } } = e;
         setState({ ...state, [name]: value });
     };
 
-    const signInHandler = (e) => {
+    const signInHandler = async (e) => {
         e.preventDefault();
-        console.log(state);
+
+        const { email, password } = state;
+
+        if (!EmailSubmitExp.test(email)) return alert(SignInErrors['email']);
+        if (!PasswordSubmitExp.test(password)) return alert(SignInErrors['password']);
+
+        const body = { email, password };
+        const { payload: { ok, message } } = await signInUser(body);
+
+        if (!ok) return alert(message);
     };
 
     return (
@@ -23,14 +46,12 @@ const SignInPage = () => {
             로그입 페이지
             <form onSubmit={signInHandler}>
                 <div>
-                    <input type="email"
-                        name="email"
+                    <input {...InputProps.email}
                         value={state.email}
                         onChange={stateChangedHandler} />
                 </div>
                 <div>
-                    <input type="password"
-                        name="password"
+                    <input {...InputProps.password}
                         value={state.password}
                         onChange={stateChangedHandler} />
                 </div>
