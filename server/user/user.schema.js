@@ -52,22 +52,24 @@ UserSchema.methods.comparePassword = async function (password) {
 
 UserSchema.methods.generateToken = async function () {
     const user = this;
-    const { _id } = user;
-    user.token = jwt.sign(_id.toHexString(), jwtSecret);
-
     try {
+        const { _id } = user;
+        user.token = jwt.sign(_id.toHexString(), jwtSecret);
         await user.save();
         return user;
     } catch (error) {
-        console.log(error);
         throw Error("Failed Save");
     };
 };
 
 UserSchema.statics.findByToken = async function (token) {
     const user = this;
-    const _id = jwt.verify(token, jwtSecret);
-    return await user.findOne({ _id }, token);
+    try {
+        const _id = jwt.verify(token, jwtSecret);
+        return await user.findOne({ _id }, token);
+    } catch (error) {
+        throw Error("Failed Auth");
+    }
 };
 
 module.exports = { UserSchema };
