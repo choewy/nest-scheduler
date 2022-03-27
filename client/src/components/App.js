@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Loading from './commons/Loading';
 import NavBar from './commons/NavBar';
 import Footer from './commons/Footer';
@@ -22,6 +22,7 @@ const App = () => {
                         element={<AuthRoute Component={SignInPage} reverse={true} />} />
                     <Route path="/chat"
                         element={<AuthRoute Component={ChatPage} reverse={false} />} />
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </div>
             <Footer />
