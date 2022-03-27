@@ -44,8 +44,11 @@ module.exports = (app) => {
             try {
                 let chat = new Chat(data);
                 const { _id } = await chat.save();
-                chat = await Chat.findOne({ _id }).populate(populateQuery);
-                chat = { ...chat._doc, createdAt: dateTimeFormatter(chat._doc.createdAt) };
+                const { _doc } = await Chat.findOne({ _id }).populate(populateQuery);
+                chat = {
+                    ..._doc,
+                    createdAt: dateTimeFormatter(_doc.createdAt)
+                };
                 return io.emit('push', chat);
             } catch (error) {
                 console.log(error);
