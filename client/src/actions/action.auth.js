@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_USER, SIGNIN_USER, SIGNOUT_USER, SIGNUP_USER } from './action-types';
+import { AUTH_USER, SIGNIN_USER, SIGNOUT_USER, SIGNUP_USER } from './action.types';
 import { AUTH_SERVER } from '../configs/server.config'
 
 export const signUpUser = async (body) => {
