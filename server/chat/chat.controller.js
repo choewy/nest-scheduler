@@ -5,12 +5,7 @@ class ChatController {
         path: 'sender',
         select: 'email name'
     }];
-
-    constructor(io, socket) {
-        this.io = io;
-        this.socket = socket;
-    };
-
+    
     #dateTimeFormatter = (createdAt) => {
         const dt = new Date(createdAt);
         return [
@@ -20,6 +15,11 @@ class ChatController {
             `0${dt.getHours()}`.slice(-2), ":",
             `0${dt.getMinutes()}`.slice(-2)
         ].join('');
+    };
+
+    constructor(io, socket) {
+        this.io = io;
+        this.socket = socket;
     };
 
     onLoad = async () => {
