@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signInUser } from '../../actions/action.auth';
 import { SignInErrors } from '../../configs/error.config';
 import { EmailSubmitExp, PasswordSubmitExp } from '../../configs/expr.config';
@@ -17,6 +18,7 @@ const InputProps = {
 };
 
 const SignInPage = () => {
+    const navigate = useNavigate();
     const [state, setState] = useState({
         email: '',
         password: '',
@@ -39,6 +41,7 @@ const SignInPage = () => {
         const { payload: { ok, message } } = await signInUser(body);
 
         if (!ok) return alert(message);
+        return navigate('/chat');
     };
 
     return (
