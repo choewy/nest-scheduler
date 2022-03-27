@@ -24,8 +24,12 @@ class UserController {
             // await sendEmail(user.email, user.name, null, 'welcome');
             return res.json({ ok: true });
         } catch (error) {
-            return res.json({ ok: false, error });
-        }
+            const { code } = error;
+            if (code === 11000) {
+                return res.json({ ok: false, message: "이미 존재하는 이메일 계정입니다." });
+            }
+            return res.json({ ok: false, message: "알 수 없는 오류가 발생하였습니다. 서버 담당자에게 문의하세요." });
+        };
     };
 
     static signIn = async (req, res) => {
