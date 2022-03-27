@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage';
 import SignUpPage from './pages/SIgnUpPage';
 import SignInPage from './pages/SignInPage';
 import ChatPage from './pages/ChatPage';
+import AuthRoute from './redirects/AuthRoute';
 
 const App = () => {
     return (
@@ -15,9 +16,12 @@ const App = () => {
             <div className='app-wrapper'>
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
-                    <Route path="/signup" element={<SignUpPage />} />
-                    <Route path="/signin" element={<SignInPage />} />
-                    <Route path="/chat" element={<ChatPage />} />
+                    <Route path="/signup"
+                        element={<AuthRoute Component={SignUpPage} reverse={true} />} />
+                    <Route path="/signin"
+                        element={<AuthRoute Component={SignInPage} reverse={true} />} />
+                    <Route path="/chat"
+                        element={<AuthRoute Component={ChatPage} reverse={false} />} />
                 </Routes>
             </div>
             <Footer />
