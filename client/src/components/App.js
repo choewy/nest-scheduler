@@ -4,7 +4,7 @@ import Loading from './commons/Loading';
 import NavBar from './commons/NavBar';
 import Footer from './commons/Footer';
 import LandingPage from './pages/LandingPage';
-import SignUpPage from './pages/SIgnUpPage';
+import SignUpPage from './pages/SignUpPage';
 import SignInPage from './pages/SignInPage';
 import ChatPage from './pages/ChatPage';
 import AuthRoute from './redirects/AuthRoute';
