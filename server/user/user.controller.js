@@ -2,11 +2,11 @@
 
 const { User } = require('./user.model');
 
-const cookieTokenKey = process.env.COOKIE_TOKEN_KEY || 'app_token';
-const cookieExpKey = process.env.COOKIE_EXP_KEY || 'app_token_exp';
-
 class UserController {
-    static auth = (req, res) => {
+    #cookieTokenKey = process.env.COOKIE_TOKEN_KEY || 'app_token';
+    #cookieExpKey = process.env.COOKIE_EXP_KEY || 'app_token_exp';
+
+    auth = (req, res) => {
         return res.status(200).json({
             _id: req.user._id,
             auth: true,
@@ -17,7 +17,7 @@ class UserController {
         });
     };
 
-    static signUp = async (req, res) => {
+    signUp = async (req, res) => {
         const user = new User(req.body);
         try {
             await user.save();
@@ -32,7 +32,7 @@ class UserController {
         };
     };
 
-    static signIn = async (req, res) => {
+    signIn = async (req, res) => {
         const { email, password } = req.body;
         let user = await User.findOne({ email });
         if (!user) return res.json({
@@ -46,15 +46,15 @@ class UserController {
 
         try {
             user = await user.generateToken();
-            res.cookie(cookieExpKey, user.tokenExp);
-            res.cookie(cookieTokenKey, user.token);
+            res.cookie(this.#cookieExpKey, user.tokenExp);
+            res.cookie(this.#cookieTokenKey, user.token);
             return res.status(200).json({ ok: true });
         } catch (error) {
             return res.json({ ok: false, error });
         };
     };
 
-    static signOut = async (req, res) => {
+    signOut = async (req, res) => {
         try {
             const { _id } = req.user;
             await User.findOneAndUpdate({ _id }, { token: "", tokenExp: "" });

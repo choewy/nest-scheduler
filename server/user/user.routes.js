@@ -5,10 +5,11 @@ const { auth } = require("./user.auth");
 const { UserController } = require("./user.controller");
 
 const UserRoutes = Router();
+const userController = new UserController();
 
-UserRoutes.get("/", auth, UserController.auth);
-UserRoutes.post("/signup", UserController.signUp);
-UserRoutes.post("/signin", UserController.signIn);
-UserRoutes.delete("/signout", auth, UserController.signOut);
+UserRoutes.get("/", auth, userController.auth);
+UserRoutes.post("/signup", userController.signUp);
+UserRoutes.post("/signin", userController.signIn);
+UserRoutes.delete("/signout", auth, userController.signOut);
 
 module.exports = { UserRoutes };
