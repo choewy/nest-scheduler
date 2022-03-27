@@ -49,7 +49,7 @@ const SignUpPage = () => {
                         onChange={stateChangedHandler} />
                 </div>
                 <div>
-                    <button type="submit">회원가입ㄴ</button>
+                    <button type="submit">회원가입</button>
                 </div>
             </form>
         </div>
