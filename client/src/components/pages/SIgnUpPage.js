@@ -28,6 +28,7 @@ const InputProps = {
 };
 
 const SignUpPage = () => {
+    // Redirect Hook
     const navigate = useNavigate();
     const [state, setState] = useState({
         name: '',
@@ -36,9 +37,11 @@ const SignUpPage = () => {
         confirmPassword: ''
     });
 
+    // 상태 변경 핸들러
     const stateChangedHandler = (e) => {
         const { target: { name, value } } = e;
 
+        // 정규표현식 검사
         switch (name) {
             case 'name':
                 if (NameInputExp.test(value)) {
@@ -51,6 +54,7 @@ const SignUpPage = () => {
         };
     };
 
+    // 회원가입 시도 핸들러
     const signUpHandler = async (e) => {
         e.preventDefault();
         const { name, email, password, confirmPassword } = state;
@@ -67,6 +71,7 @@ const SignUpPage = () => {
         return navigate('/signin');
     };
 
+    // 렌더링
     return (
         <div>
             회원가입 페이지

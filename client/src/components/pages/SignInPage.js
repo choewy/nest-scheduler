@@ -18,17 +18,20 @@ const InputProps = {
 };
 
 const SignInPage = () => {
+    // Redirect Hook
     const navigate = useNavigate();
     const [state, setState] = useState({
         email: '',
         password: '',
     });
 
+    // 상태 변경 핸들러
     const stateChangedHandler = (e) => {
         const { target: { name, value } } = e;
         setState({ ...state, [name]: value });
     };
 
+    // 로그인 시도 핸들러
     const signInHandler = async (e) => {
         e.preventDefault();
 
@@ -44,6 +47,7 @@ const SignInPage = () => {
         return navigate('/chat');
     };
 
+    // 렌더링
     return (
         <div>
             로그입 페이지
