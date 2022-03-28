@@ -3,11 +3,13 @@
 const { Chat } = require("./chat.model");
 
 class ChatController {
+    // JOIN 쿼리
     #populateQuery = [{
         path: 'sender',
         select: 'email name'
     }];
-    
+
+    // Date 객체를 YYYY-MM-DD hh:mm으로 변경
     #dateTimeFormatter = (createdAt) => {
         const dt = new Date(createdAt);
         return [
@@ -19,11 +21,13 @@ class ChatController {
         ].join('');
     };
 
+    // 생성자
     constructor(io, socket) {
         this.io = io;
         this.socket = socket;
     };
 
+    // 모든 채팅 내역 전송
     onLoad = async () => {
         let rows = await Chat.find({}).populate(this.#populateQuery);
         const chats = rows.map(row => {
@@ -36,6 +40,7 @@ class ChatController {
         this.io.emit('load', chats);
     };
 
+    // 채팅 저장 및 최근 채팅 내역 전송
     onPush = async (data) => {
         try {
             let chat = new Chat(data);

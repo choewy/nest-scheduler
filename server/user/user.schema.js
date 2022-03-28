@@ -34,6 +34,7 @@ const UserSchema = Schema({
     }
 });
 
+// 비밀번호 변경 시 암호화
 UserSchema.pre('save', async function (next) {
     const user = this;
     const { password } = user;
@@ -46,10 +47,12 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
+// 비밀번호 비교
 UserSchema.methods.comparePassword = async function (password) {
-    return await bcrypt.compare(password, this.password)
+    return await bcrypt.compare(password, this.password);
 };
 
+// 토큰 생성 (payload에 ObjectId만 저장하였음)
 UserSchema.methods.generateToken = async function () {
     const user = this;
     try {
@@ -58,10 +61,11 @@ UserSchema.methods.generateToken = async function () {
         await user.save();
         return user;
     } catch (error) {
-        throw Error("Failed Save");
+        throw Error("Failed Gen Token");
     };
 };
 
+// 토큰에 저장된 ObjectId로 사용자 정보 조회
 UserSchema.statics.findByToken = async function (token) {
     const user = this;
     try {
@@ -69,7 +73,7 @@ UserSchema.statics.findByToken = async function (token) {
         return await user.findOne({ _id, token });
     } catch (error) {
         throw Error("Failed Auth");
-    }
+    };
 };
 
 module.exports = { UserSchema };
