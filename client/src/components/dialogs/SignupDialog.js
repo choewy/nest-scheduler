@@ -107,17 +107,19 @@ const SignupDialog = (props) => {
 
     return (
         <Dialog {...dialogProps}>
-            <DialogTitle>회원가입</DialogTitle>
-            <DialogContent className={classes.content}>
-                <TextField {...inputProps.name} />
-                <TextField {...inputProps.email} />
-                <TextField {...inputProps.password} />
-                <TextField {...inputProps.confirmPassword} />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={userFormSubmit}>완료</Button>
-                <Button onClick={signupDialogClose}>취소</Button>
-            </DialogActions>
+            <form onSubmit={userFormSubmit}>
+                <DialogTitle>회원가입</DialogTitle>
+                <DialogContent className={classes.content}>
+                    <TextField {...inputProps.name} />
+                    <TextField {...inputProps.email} />
+                    <TextField {...inputProps.password} />
+                    <TextField {...inputProps.confirmPassword} />
+                </DialogContent>
+                <DialogActions>
+                    <Button type='submit'>완료</Button>
+                    <Button onClick={signupDialogClose}>취소</Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 };

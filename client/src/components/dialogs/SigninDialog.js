@@ -77,15 +77,17 @@ const SigninDialog = (props) => {
 
     return (
         <Dialog {...dialogProps}>
-            <DialogTitle>로그인</DialogTitle>
-            <DialogContent className={classes.content}>
-                <TextField {...inputProps.email} />
-                <TextField {...inputProps.password} />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={userFormSubmit}>로그인</Button>
-                <Button onClick={signinDialogClose}>취소</Button>
-            </DialogActions>
+            <form onSubmit={userFormSubmit}>
+                <DialogTitle>로그인</DialogTitle>
+                <DialogContent className={classes.content}>
+                    <TextField {...inputProps.email} />
+                    <TextField {...inputProps.password} />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">로그인</Button>
+                    <Button onClick={signinDialogClose}>취소</Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 };
