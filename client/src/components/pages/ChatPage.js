@@ -5,16 +5,10 @@ import { CHAT_SERVER } from "../../configs/server.config";
 const socket = io.connect(CHAT_SERVER);
 
 const ChatPage = (props) => {
-    // AuthRoute로부터 전달받은 사용자 정보
     const { user } = props;
-
-    // 채팅 내역
     const [rows, setRows] = useState([]);
-
-    // 채팅 메시지
     const [message, setMessage] = useState('');
 
-    // 모든 채팅 내역 받는 부분
     useEffect(() => {
         const callback = (chats) => setRows(chats);
         socket.on('load', callback);
@@ -22,20 +16,17 @@ const ChatPage = (props) => {
         return () => socket.off('load', callback);
     }, []);
 
-    // 최근 채팅 내역 받는 부분
     useEffect(() => {
         const callback = (chat) => { setRows([...rows, chat]) };
         socket.on('push', callback);
         return () => socket.off('push', callback);
     }, [rows]);
 
-    // 채팅 내용 변경 핸들러
     const chatMessageChangeHandler = (e) => {
         const { target: { value } } = e;
         setMessage(value);
     };
 
-    // 채팅 데이터 송신 핸들러
     const submigChatHandler = (e) => {
         e.preventDefault();
 
@@ -49,7 +40,6 @@ const ChatPage = (props) => {
         setMessage('');
     };
 
-    // 렌더링
     return (
         <div>
             채팅 페이지
