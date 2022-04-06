@@ -57,11 +57,17 @@ const NavBarVisitorMenu = (props) => {
     const menuItems = [
         {
             label: '로그인',
-            onClick: signinDialogOpen
+            onClick: () => {
+                menuClose();
+                signinDialogOpen();
+            }
         },
         {
             label: '회원가입',
-            onClick: signupDialogOpen
+            onClick: () => {
+                menuClose();
+                signupDialogOpen();
+            }
         }
     ];
 
