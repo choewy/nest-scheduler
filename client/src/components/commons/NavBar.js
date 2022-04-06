@@ -38,10 +38,8 @@ const NavBar = (props) => {
         }
     };
 
-    const userMenuProps = { checkAuth, signinDialogOpen };
-    const visitorMenuProps = {
-        signupDialogOpen, signinDialogOpen
-    };
+    const userMenuProps = { user, checkAuth, signinDialogOpen };
+    const visitorMenuProps = { signupDialogOpen, signinDialogOpen };
 
     return (
         <AppBar position="static">

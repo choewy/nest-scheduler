@@ -61,7 +61,9 @@ const App = (props) => {
 
     const sideBarProps = {
         open,
-        sideBarClose
+        user,
+        sideBarClose,
+        signinDialogOpen
     };
 
     const signupDialogProps = {

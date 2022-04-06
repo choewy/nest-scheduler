@@ -56,6 +56,8 @@ const SigninDialog = (props) => {
     };
 
     const userFormSubmit = async (e) => {
+        e.preventDefault();
+
         const { email, password } = userForm;
         if (!EmailSubmitExp.test(email)) return alert(SignUpErrors['email']);
         if (!PasswordSubmitExp.test(password)) return alert(SignUpErrors['password']);

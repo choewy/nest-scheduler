@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOutUser } from "../../actions/action.auth";
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 
 const styles = () => ({
     box: {
@@ -23,7 +24,9 @@ const styles = () => ({
 });
 
 const NavBarUserMenu = (props) => {
-    const { classes, checkAuth, signinDialogOpen } = props;
+    const { classes, user, checkAuth, signinDialogOpen } = props;
+    const { image } = user;
+
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -42,8 +45,7 @@ const NavBarUserMenu = (props) => {
     };
 
     const avatarProps = {
-        alt: "profile",
-        src: "/static/images/avatar/2.jpg"
+        sx: { background: '#fff' }
     };
 
     const menuProps = {
@@ -78,7 +80,15 @@ const NavBarUserMenu = (props) => {
         <Box className={classes.box}>
             <Tooltip title="Open settings">
                 <IconButton {...iconButtonProps}>
-                    <Avatar {...avatarProps} />
+                    {
+                        image
+                            ? <Avatar {...avatarProps} src={image} alt="profile" />
+                            : (
+                                <Avatar {...avatarProps}>
+                                    <AccountCircleRoundedIcon color="primary" />
+                                </Avatar>
+                            )
+                    }
                 </IconButton>
             </Tooltip>
             <Menu {...menuProps}>

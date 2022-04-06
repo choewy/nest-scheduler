@@ -27,8 +27,8 @@ const styles = (theme) => ({
 const drawerWidth = 240;
 
 const SideBar = (props) => {
-    const { classes, open, sideBarClose } = props;
-    const contentItemProps = { sideBarClose };
+    const { classes, open, user, sideBarClose, signinDialogOpen } = props;
+    const contentItemProps = { user, sideBarClose, signinDialogOpen };
 
     return (
         <Drawer
@@ -38,7 +38,7 @@ const SideBar = (props) => {
             open={open}>
             <div className={classes.drawerHeader}>
                 <ListItem >
-                    최원영(choewy)
+                    {user ? `${user.name}(${user.email})` : "방문자"}
                 </ListItem>
                 <IconButton onClick={sideBarClose}>
                     <ChevronLeftIcon />

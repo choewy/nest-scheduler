@@ -84,6 +84,8 @@ const SignupDialog = (props) => {
     };
 
     const userFormSubmit = async (e) => {
+        e.preventDefault();
+
         const { name, email, password, confirmPassword } = userForm;
         if (!NameSubmitExp.test(name)) return alert(SignUpErrors['name']);
         if (!EmailSubmitExp.test(email)) return alert(SignUpErrors['email']);

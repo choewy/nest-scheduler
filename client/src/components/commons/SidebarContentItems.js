@@ -16,7 +16,7 @@ const styles = () => ({
 const components = Components();
 
 const SideBarContentItems = (props) => {
-    const { classes, sideBarClose } = props;
+    const { classes, user, sideBarClose, signinDialogOpen } = props;
     return (
         <List>
             {components.map((component, key) => {
@@ -25,7 +25,10 @@ const SideBarContentItems = (props) => {
                 const linkProps = {
                     key, to,
                     className: classes.menuLink,
-                    onClick: sideBarClose
+                    onClick: () => {
+                        if (!user) signinDialogOpen();
+                        sideBarClose();
+                    }
                 };
                 return (
                     <Link {...linkProps}>

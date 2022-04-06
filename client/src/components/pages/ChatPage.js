@@ -1,11 +1,39 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import { CHAT_SERVER } from "../../configs/server.config";
+import ChatList from "./ChatPage/ChatList";
+import withStyles from "@mui/styles/withStyles";
 
-const socket = io.connect(CHAT_SERVER);
+const URL = process.env.NODE_ENV === 'production'
+    ? `https://${window.location.host}`
+    : 'http://localhost:5000';
+
+const socket = io.connect(URL);
+
+const styles = () => ({
+    wrapper: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    chatList: {
+        display: 'flex',
+        minWidth: 400,
+        maxWidth: 600,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'top',
+        maxHeight: 700,
+        overflowY: 'auto',
+        margin: '20px 0',
+        backgroundColor: '#9AACBC'
+    }
+});
 
 const ChatPage = (props) => {
-    const { user } = props;
+    const { classes, user } = props;
     const [rows, setRows] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -27,53 +55,44 @@ const ChatPage = (props) => {
         setMessage(value);
     };
 
-    const submigChatHandler = (e) => {
-        e.preventDefault();
+    const chatMessageKeyDown = (e) => {
+        const { shiftKey, keyCode } = e;
+        if (!shiftKey & keyCode === 13) {
+            e.preventDefault();
+            submitChatHandler();
+        };
+    };
 
+    const submitChatHandler = () => {
         const { _id, name, image } = user;
         const data = {
             message,
             sender: { _id, name, image }
         };
-
+        if (message === '') return;
         socket.emit("push", data);
         setMessage('');
     };
 
-    // TODO : 채팅 페이지 디자인 적용
+    const listProps = { user, rows };
     return (
-        <div>
-            채팅 페이지
-            <form onSubmit={submigChatHandler}>
+        <div className={classes.wrapper}>
+            <div className={classes.chatList} >
+                <ChatList {...listProps} />
+            </div>
+            <div>
                 <div>
-                    <input
+                    <textarea
                         value={message}
                         onChange={chatMessageChangeHandler}
-                    />
+                        onKeyDown={chatMessageKeyDown} />
                 </div>
                 <div>
-                    <button type="submit">보내기</button>
+                    <button onClick={submitChatHandler}>보내기</button>
                 </div>
-            </form>
-            <div>
-                {rows.map((row, index) => {
-                    const {
-                        message,
-                        createdAt,
-                        sender: { name, email, image }
-                    } = row;
-
-                    return (
-                        <div key={index} style={{ margin: '10px 0' }}>
-                            <img alt="img" src={image ? image : "https://gravatar.com/avatar"}></img>
-                            <p>{name}({email}) - {createdAt}</p>
-                            <p>{message}</p>
-                        </div>
-                    );
-                })}
             </div>
         </div>
     );
 };
 
-export default ChatPage;
+export default withStyles(styles)(ChatPage);

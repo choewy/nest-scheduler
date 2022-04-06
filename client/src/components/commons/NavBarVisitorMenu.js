@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import LockIcon from '@mui/icons-material/Lock';
 import { useState } from "react";
 
 const styles = () => ({
@@ -31,12 +32,6 @@ const NavBarVisitorMenu = (props) => {
         className: classes.iconButton,
         onClick: menuOpen
     };
-
-    const avatarProps = {
-        alt: "profile",
-        src: "/static/images/avatar/2.jpg"
-    };
-
     const menuProps = {
         anchorEl,
         open: Boolean(anchorEl),
@@ -75,7 +70,9 @@ const NavBarVisitorMenu = (props) => {
         <Box className={classes.box}>
             <Tooltip title="Open settings">
                 <IconButton {...iconButtonProps}>
-                    <Avatar {...avatarProps} />
+                    <Avatar sx={{ backgroundColor: 'white' }}>
+                        <LockIcon color="primary" />
+                    </Avatar>
                 </IconButton>
             </Tooltip>
             <Menu {...menuProps}>
