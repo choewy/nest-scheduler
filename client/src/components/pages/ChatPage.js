@@ -40,6 +40,7 @@ const ChatPage = (props) => {
         setMessage('');
     };
 
+    // TODO : 채팅 페이지 디자인 적용
     return (
         <div>
             채팅 페이지

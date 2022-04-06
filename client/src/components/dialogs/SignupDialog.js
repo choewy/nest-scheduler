@@ -106,6 +106,7 @@ const SignupDialog = (props) => {
     const inputProps = initInputProps(userForm, userFormChange);
 
     return (
+        // TODO : 다이얼로그 디자인 수정 필요
         <Dialog {...dialogProps}>
             <form onSubmit={userFormSubmit}>
                 <DialogTitle>회원가입</DialogTitle>
