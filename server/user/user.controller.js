@@ -2,24 +2,26 @@
 
 const { User } = require('./user.model');
 
-// 사용자 컨트롤러
 class UserController {
     #cookieTokenKey = process.env.COOKIE_TOKEN_KEY || 'app_token';
     #cookieExpKey = process.env.COOKIE_EXP_KEY || 'app_token_exp';
 
-    // GET  /api/auth
     auth = (req, res) => {
-        return res.status(200).json({
+        const user = {
             _id: req.user._id,
             auth: true,
             email: req.user.email,
             name: req.user.name,
             role: req.user.role,
             image: req.user.image,
+        };
+
+        return res.status(200).json({
+            auth: true,
+            user
         });
     };
 
-    // POST  /api/signup
     signUp = async (req, res) => {
         const user = new User(req.body);
         try {
@@ -34,7 +36,6 @@ class UserController {
         };
     };
 
-    // POST  /api/signin
     signIn = async (req, res) => {
         const { email, password } = req.body;
         let user = await User.findOne({ email });
@@ -57,7 +58,6 @@ class UserController {
         };
     };
 
-    // DELETE  /api/signout
     signOut = async (req, res) => {
         try {
             const { _id } = req.user;
